@@ -12,6 +12,8 @@ class Shape:
 class Square(Shape):
     def __init__(self, side):
         self.side = side
+        if not isinstance(side, int) or side < 0:
+            raise ValueError(f'Side of Square must be a non-negative integer')
 
     def perimeter(self):
         return self.side * 4
@@ -62,8 +64,7 @@ def shapes_factory(parts):
 
     if shape_type == 'Square':
         side = parts[-1]
-        if not isinstance(side, int) or side < 0:
-            raise ValueError(f'Side of Square must be a non-negative integer')
+
         shape = Square(side)
         return shape
     elif shape_type == 'Rectangle':
