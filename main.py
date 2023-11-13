@@ -59,7 +59,8 @@ class Triangle(Shape):
 
 
     def perimeter(self):
-        pass
+        return self.side_1 + self.side_2 + self.side_3
+
 
 
 def shapes_factory(parts):

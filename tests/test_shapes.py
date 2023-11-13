@@ -52,6 +52,11 @@ class TestShapes(unittest.TestCase):
         circle = Circle(0)
         self.assertEqual(circle.area(), 0)
 
+    def test_triangle_perimeter(self):
+        triangle = Triangle(2, 3, 4)
+        self.assertEqual(triangle.perimeter(), 9)
+
+
 
 class TestShapesFactory(unittest.TestCase):
 
