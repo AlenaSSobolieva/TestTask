@@ -26,6 +26,10 @@ class Rectangle(Shape):
     def __init__(self, width, height):
         self.width = width
         self.height = height
+        if not isinstance(width, int) or width < 0:
+            raise ValueError(f'Width of Rectangle must be a non-negative integer')
+        elif not isinstance(height, int) or height < 0:
+            raise ValueError(f'Height of Rectangle must be a non-negative integer')
 
     def perimeter(self):
         return (self.width + self.height) * 2
@@ -37,12 +41,25 @@ class Rectangle(Shape):
 class Circle(Shape):
     def __init__(self, radius):
         self.radius = radius
+        if not isinstance(radius, int) or radius < 0:
+            raise ValueError(f'Radius of Circle must be a non-negative integer')
 
     def perimeter(self):
         return round(2 * math.pi * self.radius)
 
     def area(self):
         return round(math.pi * (self.radius ** 2))
+
+
+class Triangle(Shape):
+    def __init__(self, side_1, side_2, side_3):
+        self.side_1 = side_1
+        self.side_2 = side_2
+        self.side_3 = side_3
+
+
+    def perimeter(self):
+        pass
 
 
 def shapes_factory(parts):
@@ -54,6 +71,7 @@ def shapes_factory(parts):
         'Square': 6,
         'Rectangle': 7,
         'Circle': 6,
+        'Triangle': 10,
     }
     expected_length = expected_lengths.get(shape_type)
     if expected_length is None:
@@ -72,16 +90,18 @@ def shapes_factory(parts):
         bottom_left = (parts[5], parts[6])
         width = top_right[0] - bottom_left[0]
         height = top_right[1] - bottom_left[1]
-        if not isinstance(width, int) or width < 0:
-            raise ValueError(f'Width of Rectangle must be a non-negative integer')
-        elif not isinstance(height, int) or height < 0:
-            raise ValueError(f'Height of Rectangle must be a non-negative integer')
         return Rectangle(width, height)
     elif shape_type == 'Circle':
         radius = parts[-1]
-        if not isinstance(radius, int) or radius < 0:
-            raise ValueError(f'Radius of Circle must be a non-negative integer')
         return Circle(radius)
+    elif shape_type == 'Triangle':
+        point1 = (parts[2], parts[3])
+        point2 = (parts[5], parts[6])
+        point3 = (parts[8], parts[9])
+        side_1 = math.sqrt((point1[0]-point2[0])**2 + (point1[1]-point2[1])**2)
+        side_2 = math.sqrt((point2[0]-point3[0])**2 + (point2[1]-point3[1])**2)
+        side_3 = math.sqrt((point3[0]-point1[0])**2 + (point3[1]-point1[1])**2)
+        return Triangle(side_1, side_2, side_3)
 
 
 if __name__ == '__main__':
@@ -103,6 +123,7 @@ if __name__ == '__main__':
 # Square TopRight 1 1 Side 1
 # Rectangle TopRight 2 2 BottomLeft 1 1
 # Circle Center 1 1 Radius 2
+# Triangle Point1 5 5 Point2 8 8 Point3 10 2
 #
 # Sample output:
 # Square Perimeter 4 Area 1

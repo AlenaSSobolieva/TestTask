@@ -1,5 +1,5 @@
 import unittest
-from main import Square, Rectangle, Circle, shapes_factory
+from main import Square, Rectangle, Circle, Triangle, shapes_factory
 
 
 class TestShapes(unittest.TestCase):
@@ -71,10 +71,25 @@ class TestShapesFactory(unittest.TestCase):
         self.assertIsInstance(result, Circle)
         self.assertEqual(result.radius, 2)
 
+    def test_valid_triangle(self):
+        result = shapes_factory(['Triangle', 'Point1', 5, 5, 'Point2', 8, 8, 'Point3', 10, 2])
+        self.assertIsInstance(result, Triangle)
+        self.assertEqual(result.side_1, 4.242640687119285)
+        self.assertEqual(result.side_2, 6.324555320336759)
+        self.assertEqual(result.side_3, 5.830951894845301)
+
+    def test_valid_other_triangle(self):
+        result = shapes_factory(['Triangle', 'Point1', 6, 6, 'Point2', 7, 7, 'Point3', 10, 9])
+        self.assertIsInstance(result, Triangle)
+        self.assertEqual(result.side_1, 1.4142135623730951)
+        self.assertEqual(result.side_2, 3.605551275463989)
+        self.assertEqual(result.side_3, 5.0)
+
+
     def test_invalid_shape_type(self):
         with self.assertRaises(ValueError) as context:
-            shapes_factory(['Triangle', 'Point1', 5, 5, 'Point2', 8, 8, 'Point3', 10, 2])
-        self.assertEqual(str(context.exception), "Unknown value of shape: Triangle")
+            shapes_factory(['Pentagon', 'Point1', 5, 5, 'Point2', 8, 8, 'Point3', 10, 2])
+        self.assertEqual(str(context.exception), "Unknown value of shape: Pentagon")
 
     def test_invalid_arguments_square(self):
         with self.assertRaises(ValueError) as context:
